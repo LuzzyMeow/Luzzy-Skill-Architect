@@ -112,7 +112,8 @@ skill-name/
 - No unused files in the directory.
 
 **Upgrade to L4**:
-1. Set up the L3 evaluation framework (see `references/evaluation-guide.md`).
+1. Set up the L3 evaluation framework. See the Evaluation Guide referenced in SKILL.md
+   under "Reference Files" (loads `references/evaluation-guide.md` on demand).
 2. Create `evals/evals.json` with at least 5 test cases.
 3. Run the evaluation and establish a baseline benchmark.
 4. Fix any failures. Re-run. Aim for ≥90% pass rate.
@@ -151,7 +152,8 @@ against a benchmark. No regressions go unnoticed.
 **What it is**: A skill ecosystem where multiple skills work together as a family or
 chained workflow. The orchestrator coordinates; child skills specialize.
 
-**Three composition patterns** (see `references/design-patterns.md` for full details):
+**Three composition patterns** (see Design Patterns table in SKILL.md for full details — loads
+`references/design-patterns.md` on demand):
 
 | Pattern | Structure | Use case |
 |---------|-----------|----------|

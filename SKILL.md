@@ -1,5 +1,5 @@
 ---
-name: Luzzy-Skill-Architect
+name: luzzy-skill-architect
 description: >
   Use when users want to create, design, improve, or audit a skill (SKILL.md).
   Handles full skill lifecycle: intent capture, directory structure design,
@@ -19,6 +19,7 @@ metadata:
   author: "Luzzy-Skill Architect Team"
   status: "stable"
   category: "meta-skill"
+  portability: "spec-level"
   target-maturity: "L3"
 allowed-tools: Read Write Edit Bash Glob Grep WebFetch WebSearch Skill
 ---
@@ -43,7 +44,7 @@ Do not skip phases. Do not merge phases.
 3. Detect implicit needs (e.g., user described a workflow but didn't realize it
    needs a `scripts/` directory).
 
-**Check before proceeding**: Can you state the user's core need in one sentence?
+**Check before proceeding**: Is the user's core need stated in one sentence?
 
 ### Phase 2 — Planning
 
@@ -74,7 +75,7 @@ Do not skip phases. Do not merge phases.
 ### Stuck Protocol
 
 If two consecutive rounds produce no substantive progress:
-1. State explicitly what you're stuck on.
+1. State explicitly what the blocker is.
 2. Present 2-3 concrete options for the user to choose from.
 3. Never guess the user's intent when blocked.
 
@@ -342,6 +343,41 @@ Your need is:
 ```
 
 See `references/ecosystem-map.md` for the full Skills vs CLAUDE.md vs MCP vs Rules comparison.
+
+---
+
+## Examples
+
+Input: "Create a skill that generates database migrations for our team"
+Output:
+  Phase 1 — Intent: skill type = Generation. Triggers: "create migration", "add migration",
+  "generate schema diff". Needs: script (migration runner), references (per-DB variants).
+  Portability: spec-level.
+  Phase 2 — Structure: db-migration/SKILL.md + references/{postgres,mysql}.md +
+  scripts/generate.py.
+  Phase 3 — Write SKILL.md: trigger-first description. Body with 5-step workflow + Verify
+  after each step. Under 500 lines.
+  Phase 4 — Verify: L1 trigger test 8/10 → add negative trigger "Do NOT use for schema
+  design discussions" → 9/10. Pass.
+
+Input: "Audit my deploy skill — it keeps activating when I talk about deployment strategy"
+Output:
+  AP-1 detected: description says "analyzes deployment config, runs build, pushes to
+  staging" — execution steps leaked. Fix: rewrite as "Use when deploying to staging.
+  Handles build and push."
+  AP-5 detected: no negative triggers. Fix: add "Do NOT use for deployment strategy
+  discussions or infrastructure planning."
+  Maturity: L1 → upgrade path to L3 via Progressive Disclosure (split cloud-specific
+  steps into references/{aws,gcp}.md).
+
+Input: "What maturity level is my code-review skill?"
+Output:
+  Quick diagnostic:
+  1. SKILL.md exists? Yes.
+  2. name + description valid? Yes.
+  3. Structured ## Workflow? Yes (numbered steps, conditionals).
+  4. scripts/ references/ or assets/? No.
+  → Level: L2. Upgrade to L3: split security checklist and style guide into references/.
 
 ---
 
