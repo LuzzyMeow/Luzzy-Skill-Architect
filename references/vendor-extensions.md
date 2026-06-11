@@ -73,10 +73,10 @@ Copilot supports a subset of Claude Code's fields through its Agent Skills integ
 
 ## OpenAI Codex Extensions
 
-Codex uses a SEPARATE configuration file for invocation control: `agents/openai.yaml`.
+Codex uses a SEPARATE configuration file for invocation control: `.agents/openai.yaml`.
 
 ```yaml
-# agents/openai.yaml
+# .agents/openai.yaml
 policy:
   allow_implicit_invocation: false  # Equivalent to disable-model-invocation
 ```
