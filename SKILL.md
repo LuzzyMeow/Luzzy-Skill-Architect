@@ -1,15 +1,17 @@
 ---
 name: luzzy-skill-architect
 description: >
-  Use when users want to create, design, improve, or audit a skill (SKILL.md).
+  Use when users want to create, design, improve, audit, or fuse skills (SKILL.md).
   Handles full skill lifecycle: intent capture, directory structure design,
   YAML frontmatter authoring, body writing, trigger validation, iteration,
-  maturity assessment, anti-pattern detection, and skill composition planning.
+  maturity assessment, anti-pattern detection, skill composition planning,
+  and skill fusion (merge 2+ skills into a Skill Family with 1+1>=2 guarantee).
   Use when the user says "create a skill", "design a skill", "improve my skill",
-  "audit this skill", "review my SKILL.md", "check my skill quality", or asks
-  about skill engineering methodology, agentskills.io specification, progressive
-  disclosure, or cross-platform portability. Also use when a user pastes a
-  long prompt and says "turn this into a skill".
+  "audit this skill", "review my SKILL.md", "check my skill quality",
+  "merge skills", "combine skills", "fuse these skills", "unify skills",
+  or asks about skill engineering methodology, agentskills.io specification,
+  progressive disclosure, or cross-platform portability. Also use when a user
+  pastes a long prompt and says "turn this into a skill".
   Do NOT use for writing general documentation, README files, or standalone
   scripts unrelated to the Agent Skills format.
 license: Apache-2.0
@@ -133,6 +135,60 @@ Deliverable: a directory tree sketch with a reason for every file and folder.
 - [ ] Reference depth ≤ 1 (no chain-loading)?
 - [ ] No over-engineering (empty directories)?
 - [ ] If composition applies, pattern is explicit?
+
+### Phase 2.5 — Fusion Analysis (when merging 2+ skills)
+
+Triggered when the user wants to combine multiple skills into one Skill Family.
+Before writing any content, assess whether fusion satisfies 1+1≥2.
+
+**Step 1 — Parse candidates**: Load SKILL.md from each candidate skill directory.
+**Step 2 — Run assessment**: Score each pair on four dimensions (see `references/skill-fusion.md`):
+| Dimension | Max | What to check |
+|-----------|-----|---------------|
+| Domain Overlap | 30 | Shared keywords, trigger proximity |
+| Conflict Risk | 25 | Name collisions, platform conflicts, tool restrictions |
+| Complementarity | 25 | I/O chain potential, domain adjacency |
+| Structure | 20 | Valid frontmatter, clean descriptions |
+
+**Step 3 — Automated tool**: Run `scripts/fusion-analyzer.py <dir1> <dir2> [...]` for quantitative scoring.
+
+**Step 4 — Verdict**:
+- ≥80: STRONG — proceed immediately.
+- 60–79: FEASIBLE — proceed with noted caveats.
+- 40–59: WEAK — agent recommends against; require user override.
+- <40 or CRITICAL conflict: REJECT — explain why and suggest alternatives.
+
+**Step 5 — Design family structure** (if approved):
+```
+fusion-name/
+├── SKILL.md             # Parent orchestrator with routing table
+├── references/
+│   └── fusion-map.md    # Merge rationale + compatibility report
+├── <skill-a>/           # Child skill preserved intact
+├── <skill-b>/           # Child skill preserved intact
+└── scripts/
+    └── check-updates.py # Self-update checker
+```
+
+**Step 6 — Record source repos** in orchestrator metadata:
+```yaml
+metadata:
+  source_skills:
+    - name: "<skill-a>"
+      repo: "<git-url>"
+      version: "<version>"
+      last_sync: "<date>"
+  self_update:
+    enabled: true
+    check_interval: "on-audit"
+```
+
+**Fusion Gate:**
+- [ ] Pre-merge assessment score ≥60 OR user explicitly overrode WEAK verdict?
+- [ ] All child skill directories preserved intact?
+- [ ] Orchestrator has routing logic for every child?
+- [ ] Source repos recorded in metadata?
+- [ ] fusion-map.md documents the merge rationale?
 
 ### Phase 3 — Write SKILL.md
 
@@ -293,8 +349,10 @@ See `references/maturity-model.md` for the full upgrade path for each level.
 | Workflow Chain | Multi-step orchestration | Parent declares sequence + handoff conditions |
 | Tool Augmentation | MCP exists but lacks know-how | Skill teaches agent *how* to use MCP tools, doesn't replace them |
 | Template Factory | Strict output format | Templates in assets/; fill rules + quality checklist in body |
+| Skill Fusion | Multiple skills need to work as one | Parent orchestrator + child dirs intact; source repos tracked; self-update enabled |
 
 See `references/design-patterns.md` for full decision trees per pattern.
+See `references/skill-fusion.md` for complete fusion methodology.
 
 
 ## Anti-Patterns — Quick Reference
@@ -361,6 +419,19 @@ Output:
   4. scripts/ references/ or assets/? No.
   → Level: L2. Upgrade to L3: split security checklist and style guide into references/.
 
+Input: "Fuse my code-review and test-runner skills into one PR-check skill"
+Output:
+  Phase 2.5 — Fusion Analysis: parse SKILL.md from both candidates.
+  code-review + test-runner:
+    Domain Overlap: 30/30 (strong — same CI pipeline domain)
+    Conflict Risk: 25/25 (none)
+    Complementarity: 25/25 (strong — review output feeds test selection)
+    Structure: 20/20 (both pass skills-ref validate)
+    Total: 100/100 — VERDICT: STRONG.
+  Design family: pr-checks/SKILL.md orchestrator with routing table.
+  Children: code-review/ and test-runner/ preserved intact.
+  Record source repos in metadata.source_skills for self-update.
+
 
 ## Self-Referential Checklist
 
@@ -387,6 +458,7 @@ Load these on demand when the user's needs match:
 | [references/ecosystem-map.md](references/ecosystem-map.md) | User asks "skill vs CLAUDE.md vs MCP?" |
 | [references/vendor-extensions.md](references/vendor-extensions.md) | User targets Claude Code / VS Code / specific platform |
 | [references/evaluation-guide.md](references/evaluation-guide.md) | User wants L3 batch evaluation setup |
+| [references/skill-fusion.md](references/skill-fusion.md) | User wants to merge 2+ skills, check fusion eligibility, or set up self-update |
 
 ## Template Files
 
@@ -409,3 +481,5 @@ Load these on demand when the user's needs match:
 | File | Use when |
 |------|----------|
 | [scripts/validate-trigger.py](scripts/validate-trigger.py) | Automating L1 trigger validation. Run: `python scripts/validate-trigger.py <skill-dir>` |
+| [scripts/fusion-analyzer.py](scripts/fusion-analyzer.py) | Assessing fusion compatibility. Run: `python scripts/fusion-analyzer.py <dir1> <dir2> [...]` |
+| [scripts/check-updates.py](scripts/check-updates.py) | Checking source repo updates. Run: `python scripts/check-updates.py --skill-dir <path>` |
