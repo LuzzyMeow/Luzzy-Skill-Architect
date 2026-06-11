@@ -69,7 +69,11 @@ def load_triggers(skill_dir: Path) -> list:
     """Load trigger test cases from triggers.json or return empty list."""
     triggers_file = skill_dir / "triggers.json"
     if triggers_file.exists():
-        return json.loads(triggers_file.read_text(encoding="utf-8"))
+        try:
+            return json.loads(triggers_file.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            print(f"ERROR: triggers.json contains invalid JSON: {e}")
+            sys.exit(1)
     return []
 
 

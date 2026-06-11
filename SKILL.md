@@ -15,7 +15,7 @@ description: >
   Do NOT use for writing general documentation, README files, or standalone
   scripts unrelated to the Agent Skills format.
 license: Apache-2.0
-compatibility: requires: skills-ref>=0.1.0 (optional, for validation)
+compatibility: requires: python>=3.8 (for scripts); skills-ref>=0.1.0 (optional, for validation)
 metadata:
   version: "1.0.0"
   author: "Luzzy-Skill Architect Team"

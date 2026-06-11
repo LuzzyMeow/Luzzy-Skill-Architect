@@ -87,6 +87,23 @@ for Codex.
 
 ---
 
+## Gemini CLI
+
+Gemini CLI follows the agentskills.io spec with full cross-platform compliance. Uses
+`.gemini/skills/` (project) and `~/.gemini/skills/` (personal). No vendor-specific
+YAML frontmatter fields. Supports `.agents/skills/` as an alternative location.
+
+## Cursor
+
+Uses `.cursor/skills/` (project) and `~/.cursor/skills/` (personal). Supports the
+standard six fields. No vendor extensions.
+
+## Windsurf
+
+Uses `.windsurf/skills/` (project). Fully spec-compliant. No additional YAML fields.
+
+---
+
 ## Portability Decision Matrix
 
 | If you need... | Spec-level | Claude+VS Code | Claude-only |
