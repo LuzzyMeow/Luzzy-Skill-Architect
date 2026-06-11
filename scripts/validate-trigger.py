@@ -120,15 +120,20 @@ def analyze_description(description: str) -> list:
     suggestions = []
     
     # Check for execution steps in description (anti-pattern AP-1)
+    # Only flag execution words that appear outside user-speech context
+    # (i.e., NOT inside quoted trigger phrases like '"audit this skill"')
     execution_indicators = [
         "first", "then", "next", "finally", "step", "run", "execute",
-        "check", "verify", "create", "write", "read", "modify", "delete"
+        "verify", "write", "read", "modify", "delete"
     ]
+    # Split away quoted user-speech patterns (between double quotes)
     desc_lower = description.lower()
-    found_indicators = [w for w in execution_indicators if re.search(rf'\b{w}\b', desc_lower)]
+    clean_desc = re.sub(r'"[^"]*"', '', desc_lower)
+    found_indicators = [w for w in execution_indicators if re.search(rf'\b{w}\b', clean_desc)]
     if found_indicators:
         suggestions.append(
-            f"AP-1: Description may contain execution steps. "
+            f"AP-1: Description may contain execution steps "
+            f"(outside quoted trigger patterns). "
             f"Indicators found: {', '.join(found_indicators)}. "
             f"Move these to the body."
         )

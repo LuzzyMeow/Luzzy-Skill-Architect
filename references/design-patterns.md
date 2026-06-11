@@ -3,6 +3,10 @@
 Six reusable patterns for skill engineering. Each pattern includes: what problem it
 solves, when to use it, the core structure, and a minimal example.
 
+**Note**: File paths in example directory trees (e.g., `references/aws.md`,
+`scripts/validate.py`) are illustrative examples within hypothetical skills — they do
+not reference actual files in this project.
+
 ---
 
 ## Pattern 1: Trigger-First

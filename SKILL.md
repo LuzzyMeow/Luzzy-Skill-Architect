@@ -29,8 +29,6 @@ allowed-tools: Read Write Edit Bash Glob Grep WebFetch WebSearch Skill
 Create, audit, and elevate Agent Skills following the
 [agentskills.io](https://agentskills.io/specification) open standard.
 
----
-
 ## Execution Protocol: PPER
 
 Every interaction with the user follows this mandatory cycle.
@@ -79,15 +77,9 @@ If two consecutive rounds produce no substantive progress:
 2. Present 2-3 concrete options for the user to choose from.
 3. Never guess the user's intent when blocked.
 
----
-
 ## Five-Phase Skill Lifecycle
 
-```
-Understand Intent → Design Structure → Write SKILL.md → Verify Trigger → Iterate
-      ↑                                                                     │
-      └─────────────────────────────────────────────────────────────────────┘
-```
+**Flow**: Understand Intent → Design Structure → Write SKILL.md → Verify Trigger → Iterate (loops back to Understand Intent).
 
 ### Phase 1 — Understand Intent
 
@@ -113,16 +105,16 @@ Deliverable: a skill profile card (verbal or written) with all six answers.
 
 ### Phase 2 — Design Structure
 
-Design the directory tree before writing content. Use this decision tree:
+Design the directory tree before writing content. Decision rules:
 
-```
-Needs deterministic scripts?              → Add scripts/
-Body likely exceeds 500 lines?            → Split into references/
-Supports multiple platform variants?      → references/{variant1,variant2}.md
-Produces fixed-format output?             → assets/ with templates
-Part of a skill family?                   → Discuss composition/nesting patterns
-None of the above?                        → Single SKILL.md is enough
-```
+| Condition | Action |
+|-----------|--------|
+| Needs deterministic scripts | Add scripts/ |
+| Body likely exceeds 500 lines | Split into references/ |
+| Supports multiple platform variants | Create references/{variant}.md |
+| Produces fixed-format output | Add assets/ with templates |
+| Part of a skill family | Discuss composition patterns |
+| None of the above | Single SKILL.md is enough |
 
 **Three composition patterns:**
 
@@ -236,8 +228,6 @@ Deliverable: verification report with test results and improvement suggestions.
 - [ ] (Optional) Target maturity level reached?
 - [ ] (Optional) Portability audit passed?
 
----
-
 ## Quality Gates
 
 ### Phase 1 — Intent Confirmed
@@ -278,8 +268,6 @@ Deliverable: verification report with test results and improvement suggestions.
 - [ ] (Optional) Target maturity reached?
 - [ ] (Optional) Portability confirmed?
 
----
-
 ## Skill Maturity Model
 
 Use this to diagnose and upgrade skills.
@@ -295,8 +283,6 @@ Use this to diagnose and upgrade skills.
 
 See `references/maturity-model.md` for the full upgrade path for each level.
 
----
-
 ## Design Patterns
 
 | Pattern | Problem | Solution |
@@ -310,7 +296,6 @@ See `references/maturity-model.md` for the full upgrade path for each level.
 
 See `references/design-patterns.md` for full decision trees per pattern.
 
----
 
 ## Anti-Patterns — Quick Reference
 
@@ -328,23 +313,20 @@ See `references/design-patterns.md` for full decision trees per pattern.
 
 See `references/anti-patterns.md` for detailed cases with before/after examples.
 
----
 
 ## Ecosystem Decision Tree
 
-```
-Your need is:
-├─ Always-on, applies to every session?        → CLAUDE.md / custom instructions
-├─ Scenario-specific workflow?                 → Skill
-├─ Need external API/database access?          → MCP Server + Skill (Tool Augmentation)
-├─ Need isolated, async execution?             → Skill with context: fork (Claude Code)
-├─ Multiple skills to coordinate?              → Workflow Chain / Skill Family
-└─ One-off assistant behavior tweak?           → Prompt, not a skill
-```
+| Need | Solution |
+|------|----------|
+| Always-on, applies to every session | CLAUDE.md / custom instructions |
+| Scenario-specific workflow | Skill |
+| External API/database access | MCP Server + Skill (Tool Augmentation) |
+| Isolated, async execution | Skill with context: fork |
+| Multiple skills to coordinate | Workflow Chain / Skill Family |
+| One-off assistant behavior tweak | Prompt (not a skill) |
 
 See `references/ecosystem-map.md` for the full Skills vs CLAUDE.md vs MCP vs Rules comparison.
 
----
 
 ## Examples
 
@@ -379,7 +361,6 @@ Output:
   4. scripts/ references/ or assets/? No.
   → Level: L2. Upgrade to L3: split security checklist and style guide into references/.
 
----
 
 ## Self-Referential Checklist
 
@@ -393,7 +374,6 @@ This skill itself must pass its own standards:
 - [ ] Passes `skills-ref validate`?
 - [ ] Self-assessed maturity: L3+?
 
----
 
 ## Reference Files
 

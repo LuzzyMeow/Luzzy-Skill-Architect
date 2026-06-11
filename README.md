@@ -116,7 +116,17 @@ User: "审查我的 deploy 技能"
 - **依赖**：`skills-ref`（可选，用于格式验证）；Python 3.8+（可选，用于触发词脚本）
 - **支持的 Agent 平台**：WorkBuddy、Claude Code、VS Code Copilot、Cursor、Gemini CLI、OpenAI Codex、Windsurf 等
 
----
+## 贡献
+
+欢迎通过 Issue 和 PR 参与改进：
+
+1. Fork 本仓库
+2. 创建特性分支：`git checkout -b feature/your-feature`
+3. 确保通过自验证：`python scripts/validate-trigger.py .`
+4. 遵循本项目的[设计哲学](#设计哲学)和[反模式规范](references/anti-patterns.md)
+5. 提交 PR 并描述改动
+
+提交前请确认未引入新的反模式。
 
 ## License
 
