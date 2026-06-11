@@ -87,17 +87,17 @@ User: "审查我的 deploy 技能"
 → 反模式检测：发现 description 泄露执行步骤（AP-1）
 → 成熟度诊断：当前 L1，可升级至 L3
 → 给出具体修复方案和目录重组建议
+```
 
 ### 融合技能
+
 ```
 User: "把我的 code-review 和 test-runner 合并成一个 PR-check 技能"
 → Phase 2.5 融合分析：四维评分 100/100 → VERDICT: STRONG
 → 生成 pr-checks/ 编排器 + 保留子技能完整目录
 → 记录源仓库地址，启用自更新机制
 ```
-```
 
----
 
 ## 设计哲学
 
