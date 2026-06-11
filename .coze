@@ -1,9 +1,0 @@
-[project]
-requires = ["python-3.11"]
-project_type = ""
-
-[preview]
-preview_enable = "disabled"
-
-[subprojects]
-path = ["."]
