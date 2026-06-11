@@ -1,0 +1,123 @@
+# Luzzy-Skill-Architect
+
+> 元技能架构师 — 创建、诊断、升级 Agent Skills 的全生命周期工程工具。
+
+遵循 [agentskills.io](https://agentskills.io/specification) 开放标准，内建 PPER 思考协议（CoT+ReAct），覆盖从零创建到成熟度评估的完整技能工程方法论。
+
+---
+
+## 快速开始
+
+```bash
+# 克隆
+git clone https://github.com/LuzzyMeow/Luzzy-Skill-Architect.git
+
+# 安装为 WorkBuddy 技能
+cp -r Luzzy-Skill-Architect ~/.workbuddy/skills/
+
+# 运行自验证
+python scripts/validate-trigger.py .
+```
+
+---
+
+## 核心能力
+
+| 维度 | 内容 |
+|------|------|
+| **思考协议** | PPER（Perception → Planning → Execution → Reflection）固定执行引擎 |
+| **五阶段流程** | 理解意图 → 结构设计 → 撰写产出 → 验证触发 → 迭代打磨 |
+| **成熟度模型** | L0-L5 六级阶梯，带完整升级路径 |
+| **设计模式** | 六种可复用模式（Trigger-First / Progressive Disclosure / Domain Variant / Workflow Chain / Tool Augmentation / Template Factory） |
+| **反模式库** | 十种常见错误，每个含 Before/After 案例 |
+| **质量门禁** | 五个阶段 × 多层硬性检查清单 |
+| **生态决策** | Skill vs CLAUDE.md vs MCP vs Rules 定位指南 |
+| **评测体系** | L1 触发测试 + L2 单次执行 + L3 批量评测（evals.json） |
+
+---
+
+## 目录结构
+
+```
+Luzzy-Skill-Architect/
+├── SKILL.md                          # 入口：PPER协议 + 五阶段流程 + 质量门禁
+├── references/                       # 按需加载的参考文档
+│   ├── maturity-model.md             # L0-L5 成熟度升级详解
+│   ├── design-patterns.md            # 六种设计模式 + 决策树
+│   ├── anti-patterns.md              # 十种反模式 + 修复案例
+│   ├── ecosystem-map.md              # 技能 vs 其他 Agent 机制
+│   ├── vendor-extensions.md          # 平台扩展字段参考
+│   └── evaluation-guide.md           # L3 批量评测体系
+├── assets/
+│   ├── templates/                    # 技能骨架模板
+│   │   ├── skill-basic.md            # L1 单文件技能
+│   │   ├── skill-structured.md       # L2-L3 带拆分技能
+│   │   └── skill-family.md           # L5 编排型技能家族
+│   └── protocols/                    # 思考协议模板
+│       ├── pper-protocol.md          # 完整四阶段协议
+│       ├── otav-protocol.md          # 轻量 Observe-Think-Act-Verify
+│       └── react-protocol.md         # 探索型 Thought-Action-Observation
+└── scripts/
+    └── validate-trigger.py           # L1 触发词自动验证
+```
+
+---
+
+## 使用示例
+
+### 创建新技能
+
+```
+User: "帮我创建一个数据库迁移技能"
+→ Luzzy-Skill-Architect 激活
+→ Phase 1-2: 意图捕获 + 结构设计
+→ Phase 3: 产出 db-migration/SKILL.md + references/{postgres,mysql}.md
+→ Phase 4: 验证 description 触发准确率
+→ Phase 5: 迭代至 L3 成熟度
+```
+
+### 审计现有技能
+
+```
+User: "审查我的 deploy 技能"
+→ 反模式检测：发现 description 泄露执行步骤（AP-1）
+→ 成熟度诊断：当前 L1，可升级至 L3
+→ 给出具体修复方案和目录重组建议
+```
+
+---
+
+## 设计哲学
+
+- **标准优先**：仅依赖 agentskills.io spec 的六个标准字段，vendor 扩展作为知识附录
+- **结构驱动**：先设计目录树，再写 SKILL.md — 不生成不能解释存在理由的目录
+- **自指涉示范**：本技能自身完美遵循它所教授的所有原则（description 纯触发词、body 密集格式 ≤500 行、渐进式加载 references/）
+- **渐进式指导**：不假设用户背景，在流程中自然教授渐进式加载、description trigger 理论、token 预算等概念
+
+---
+
+## 参考源
+
+| 项目 | 链接 |
+|------|------|
+| agentskills.io 规范 | https://agentskills.io/specification |
+| anthropics/skills | https://github.com/anthropics/skills |
+| agentskills/agentskills | https://github.com/agentskills/agentskills |
+| Claude Code Skills 文档 | https://code.claude.com/docs/en/skills.md |
+| Agent Skills 101 教程 | https://blog.serghei.pl/posts/agent-skills-101/ |
+| 嵌套技能讨论 (#137) | https://github.com/agentskills/agentskills/issues/137 |
+
+---
+
+## 兼容性
+
+- **目标平台**：完全跨平台 spec-level
+- **规范版本**：agentskills.io 开放标准
+- **依赖**：`skills-ref`（可选，用于格式验证）；Python 3.8+（可选，用于触发词脚本）
+- **支持的 Agent 平台**：WorkBuddy、Claude Code、VS Code Copilot、Cursor、Gemini CLI、OpenAI Codex、Windsurf 等
+
+---
+
+## License
+
+Apache 2.0 — 详见仓库中的 LICENSE 文件（若未包含，请参考 https://www.apache.org/licenses/LICENSE-2.0）。
