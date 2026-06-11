@@ -1,6 +1,6 @@
 # Design Patterns — Full Reference
 
-Six reusable patterns for skill engineering. Each pattern includes: what problem it
+Seven reusable patterns for skill engineering. Each pattern includes: what problem it
 solves, when to use it, the core structure, and a minimal example.
 
 **Note**: File paths in example directory trees (e.g., `references/aws.md`,

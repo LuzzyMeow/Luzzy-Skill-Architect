@@ -99,47 +99,47 @@ User: "把我的 code-review 和 test-runner 合并成一个 PR-check 技能"
 ```
 
 
-## 设计哲学
+## Design Philosophy
 
-- **标准优先**：仅依赖 agentskills.io spec 的六个标准字段，vendor 扩展作为知识附录
-- **结构驱动**：先设计目录树，再写 SKILL.md — 不生成不能解释存在理由的目录
-- **自指涉示范**：本技能自身完美遵循它所教授的所有原则（description 纯触发词、body 密集格式 ≤500 行、渐进式加载 references/）
-- **渐进式指导**：不假设用户背景，在流程中自然教授渐进式加载、description trigger 理论、token 预算等概念
+- **Standards-first**: Only the six standard fields from the agentskills.io spec; vendor extensions are knowledge appendices
+- **Structure-driven**: Design the directory tree before writing SKILL.md — never generate a directory you can't justify
+- **Self-referential demonstration**: This skill itself perfectly follows every principle it teaches (trigger-only description, dense body format ≤500 lines, progressive disclosure via references/)
+- **Progressive guidance**: Teaches progressive disclosure, description trigger theory, and token budget concepts naturally within the workflow
 
 ---
 
-## 参考源
+## Reference Sources
 
-| 项目 | 链接 |
+| Item | Link |
 |------|------|
-| agentskills.io 规范 | https://agentskills.io/specification |
+| agentskills.io specification | https://agentskills.io/specification |
 | anthropics/skills | https://github.com/anthropics/skills |
 | agentskills/agentskills | https://github.com/agentskills/agentskills |
-| Claude Code Skills 文档 | https://code.claude.com/docs/en/skills.md |
-| Agent Skills 101 教程 | https://blog.serghei.pl/posts/agent-skills-101/ |
-| 嵌套技能讨论 (#137) | https://github.com/agentskills/agentskills/issues/137 |
+| Claude Code Skills docs | https://code.claude.com/docs/en/skills.md |
+| Agent Skills 101 tutorial | https://blog.serghei.pl/posts/agent-skills-101/ |
+| Nested skills discussion (#137) | https://github.com/agentskills/agentskills/issues/137 |
 
 ---
 
-## 兼容性
+## Compatibility
 
-- **目标平台**：完全跨平台 spec-level
-- **规范版本**：agentskills.io 开放标准
-- **依赖**：`skills-ref`（可选，用于格式验证）；Python 3.8+（可选，用于触发词脚本）
-- **支持的 Agent 平台**：WorkBuddy、Claude Code、VS Code Copilot、Cursor、Gemini CLI、OpenAI Codex、Windsurf 等
+- **Target platform**: Fully cross-platform, spec-level
+- **Spec version**: agentskills.io open standard
+- **Dependencies**: `skills-ref` (optional, for format validation); Python 3.8+ (optional, for trigger scripts)
+- **Supported agent platforms**: WorkBuddy, Claude Code, VS Code Copilot, Cursor, Gemini CLI, OpenAI Codex, Windsurf, and more
 
-## 贡献
+## Contributing
 
-欢迎通过 Issue 和 PR 参与改进：
+Issues and PRs are welcome:
 
-1. Fork 本仓库
-2. 创建特性分支：`git checkout -b feature/your-feature`
-3. 确保通过自验证：`python scripts/validate-trigger.py .`
-4. 遵循本项目的[设计哲学](#设计哲学)和[反模式规范](references/anti-patterns.md)
-5. 提交 PR 并描述改动
+1. Fork this repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Ensure self-validation passes: `python scripts/validate-trigger.py .`
+4. Follow the project's [Design Philosophy](#design-philosophy) and [anti-patterns reference](references/anti-patterns.md)
+5. Submit a PR describing your changes
 
-提交前请确认未引入新的反模式。
+Before submitting, confirm no new anti-patterns were introduced.
 
 ## License
 
-Apache 2.0 — 详见仓库中的 LICENSE 文件（若未包含，请参考 https://www.apache.org/licenses/LICENSE-2.0）。
+Apache 2.0 — see the LICENSE file in the repository (if not included, refer to https://www.apache.org/licenses/LICENSE-2.0).

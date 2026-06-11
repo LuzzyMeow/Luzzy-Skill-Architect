@@ -10,9 +10,9 @@ with specific content relevant to that skill.
 
 ## Execution Protocol: PPER
 
-Every interaction follows this mandatory cycle. Do not skip phases.
+Every interaction follows this mandatory cycle. Do not skip stages.
 
-### Phase 1 — Perception
+### Stage 1 — Perception
 
 1. Read the current state: {{WHAT_TO_OBSERVE}}
 2. Identify what has changed since the last check.
@@ -20,7 +20,7 @@ Every interaction follows this mandatory cycle. Do not skip phases.
 
 Check before proceeding: {{PERCEPTION_CHECK}}
 
-### Phase 2 — Planning
+### Stage 2 — Planning
 
 1. Decompose the goal into sub-goals: {{SUBGOAL_LIST}}
 2. Generate at least two approaches. Choose the best.
@@ -28,15 +28,15 @@ Check before proceeding: {{PERCEPTION_CHECK}}
 
 Check before proceeding: {{PLANNING_CHECK}}
 
-### Phase 3 — Execution
+### Stage 3 — Execution
 
 1. Execute the planned action: {{ACTION_STEPS}}
 2. After each action, verify: {{VERIFICATION_STEPS}}
-3. If result diverges from expectation → return to Phase 2.
+3. If result diverges from expectation → return to Stage 2.
 
 Check before proceeding: {{EXECUTION_CHECK}}
 
-### Phase 4 — Reflection
+### Stage 4 — Reflection
 
 1. Compare output against success criteria: {{SUCCESS_CRITERIA}}
 2. Record any patterns or preferences for future use.

@@ -17,6 +17,7 @@ Requires: Python 3.8+ (stdlib only, no external dependencies)
 import json
 import re
 import sys
+import argparse
 from pathlib import Path
 
 
@@ -39,29 +40,37 @@ def extract_frontmatter(skill_dir: Path) -> dict:
 
     frontmatter_text = parts[1].strip()
     metadata = {}
+    current_multiline_key = None
+
     for line in frontmatter_text.split("\n"):
-        line = line.strip()
-        if ":" in line:
-            key, _, value = line.partition(":")
-            key = key.strip()
-            value = value.strip().strip('"').strip("'")
-            if key == "description" and value == ">":
-                continue
-            metadata[key] = value
-        elif metadata.get("_multiline_key"):
-            key = metadata.pop("_multiline_key")
-            metadata[key] = metadata.get(key, "") + " " + line.strip()
-        elif any(line.startswith(f"{k}: >") for k in ["description"]):
+        stripped = line.strip()
+        if not stripped:
             continue
 
-    # Handle YAML folded block scalar for description
-    if "description" not in metadata:
-        desc_match = re.search(r"description:\s*>\s*\n((?:\s{2,}.+\n?)+)", frontmatter_text)
-        if desc_match:
-            desc_lines = desc_match.group(1).strip().split("\n")
-            metadata["description"] = " ".join(line.strip() for line in desc_lines)
+        # Check if this line starts a new key (not indented)
+        if not line.startswith(" ") and ":" in stripped:
+            key, _, value = stripped.partition(":")
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            if value in (">", "|"):
+                current_multiline_key = key
+                metadata[key] = ""
+            elif value:
+                metadata[key] = value
+                current_multiline_key = None
+            else:
+                current_multiline_key = None
+        elif current_multiline_key:
+            # Continuation of a multiline value
+            metadata[current_multiline_key] = metadata.get(current_multiline_key, "") + " " + stripped
 
-    metadata["description"] = metadata.get("description", content.split("---", 2)[2].split("\n")[0].strip())
+    # Clean up multiline values: collapse whitespace
+    for key in metadata:
+        if isinstance(metadata[key], str):
+            metadata[key] = " ".join(metadata[key].split())
+
+    if "description" not in metadata:
+        metadata["description"] = content.split("---", 2)[2].split("\n")[0].strip()
     return metadata
 
 
@@ -198,13 +207,22 @@ def validate_name(name: str, dir_name: str) -> list:
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python scripts/validate-trigger.py <skill-directory>")
-        print("       python scripts/validate-trigger.py <skill-directory> --verbose")
-        sys.exit(1)
-    
-    skill_dir = Path(sys.argv[1]).resolve()
-    verbose = "--verbose" in sys.argv
+    parser = argparse.ArgumentParser(
+        description="L1 Trigger Validation for Agent Skills"
+    )
+    parser.add_argument(
+        "skill_dir",
+        help="Path to the skill directory to validate"
+    )
+    parser.add_argument(
+        "--verbose", "-v",
+        action="store_true",
+        help="Show all test results, not just failures"
+    )
+    args = parser.parse_args()
+
+    skill_dir = Path(args.skill_dir).resolve()
+    verbose = args.verbose
     
     if not skill_dir.is_dir():
         print(f"ERROR: {skill_dir} is not a directory.")

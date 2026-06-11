@@ -1,7 +1,7 @@
 # Evaluation Guide — L3 Batch Evaluation
 
 This guide describes how to set up and run L3 batch evaluations for skills. This is
-the evaluation tier inherited from the original anthropics/skill-creator, adapted for
+the evaluation tier adapted from open-source skill evaluation practices for
 cross-platform use.
 
 **When to use L3**: The skill is critical to your workflow, changes frequently, or is

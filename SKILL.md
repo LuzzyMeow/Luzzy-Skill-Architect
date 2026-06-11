@@ -15,7 +15,8 @@ description: >
   Do NOT use for writing general documentation, README files, or standalone
   scripts unrelated to the Agent Skills format.
 license: Apache-2.0
-compatibility: requires: python>=3.8 (for scripts); skills-ref>=0.1.0 (optional, for validation)
+compatibility: >
+  requires: python>=3.8 (for scripts); skills-ref>=0.1.0 (optional, for validation)
 metadata:
   version: "1.0.0"
   author: "Luzzy-Skill Architect Team"
@@ -34,9 +35,9 @@ Create, audit, and elevate Agent Skills following the
 ## Execution Protocol: PPER
 
 Every interaction with the user follows this mandatory cycle.
-Do not skip phases. Do not merge phases.
+Do not skip stages. Do not merge stages.
 
-### Phase 1 — Perception
+### Stage 1 — Perception
 
 1. Identify the user's explicit request and emotional tone.
 2. Determine which stage of the skill lifecycle is active (intent → structure →
@@ -46,7 +47,7 @@ Do not skip phases. Do not merge phases.
 
 **Check before proceeding**: Is the user's core need stated in one sentence?
 
-### Phase 2 — Planning
+### Stage 2 — Planning
 
 1. Decompose the request into sub-goals.
 2. Generate at least two feasible approaches. Choose the best one.
@@ -56,17 +57,17 @@ Do not skip phases. Do not merge phases.
 
 **Check before proceeding**: Are at least two approaches on the table?
 
-### Phase 3 — Execution
+### Stage 3 — Execution
 
 1. Carry out the planned actions: write files, run validation, present output.
 2. After each action, self-check: did the result match expectation?
-3. If the result diverges → return to Phase 2 with new information.
+3. If the result diverges → return to Stage 2 with new information.
 
 **Check before proceeding**: Has every file written been verified to exist?
 
-### Phase 4 — Reflection
+### Stage 4 — Reflection
 
-1. Compare output against quality gates (see [Quality Gates](#quality-gates)).
+1. Compare output against quality gates (see each lifecycle phase's gate below).
 2. Predict user's likely reaction. Prepare follow-up.
 3. Record noteworthy patterns or user preferences.
 
@@ -284,46 +285,6 @@ Deliverable: verification report with test results and improvement suggestions.
 - [ ] (Optional) Target maturity level reached?
 - [ ] (Optional) Portability audit passed?
 
-## Quality Gates
-
-### Phase 1 — Intent Confirmed
-- [ ] Core need reduced to one sentence?
-- [ ] ≥3 trigger phrases collected?
-- [ ] Skill type identified? (Generation / Automation / Knowledge)
-- [ ] Portability target explicit? (spec-level / cross-vendor / single-vendor)
-- [ ] User confirmed the skill profile card?
-
-### Phase 2 — Structure Confirmed
-- [ ] Every directory/file has a reason to exist?
-- [ ] Each script has an invocation guide?
-- [ ] References split by "one file, one topic"?
-- [ ] Reference depth ≤ 1?
-- [ ] No unnecessary directories?
-- [ ] Composition pattern explicit if applicable?
-
-### Phase 3 — Content Quality
-- [ ] `name` valid per spec?
-- [ ] `description` is trigger-only (no execution steps leaked)?
-- [ ] Negative triggers present?
-- [ ] Body in imperative mood?
-- [ ] Body in dense format (no decorative elements)?
-- [ ] ≥2 I/O examples?
-- [ ] Verification steps built in?
-- [ ] Body ≤ 500 lines?
-- [ ] `skills-ref validate` passed?
-
-### Phase 4 — Verification Passed
-- [ ] L1 trigger test ≥ 80%?
-- [ ] L2 single run successful (if applicable)?
-- [ ] Negative triggers prevent false positives?
-- [ ] Actual trigger behavior matches intent?
-
-### Phase 5 — Delivery
-- [ ] User satisfied?
-- [ ] Metadata recorded (version, author)?
-- [ ] (Optional) Target maturity reached?
-- [ ] (Optional) Portability confirmed?
-
 ## Skill Maturity Model
 
 Use this to diagnose and upgrade skills.
@@ -368,6 +329,7 @@ See `references/skill-fusion.md` for complete fusion methodology.
 | One skill doing too many things | Decompose into skill family |
 | No verification steps → silent failures | Add "Verify:" after each step |
 | Description too conservative → never activates | Add more trigger keywords and synonyms |
+| Body reads like a README, not executable instructions | Delete prose, keep imperative steps |
 
 See `references/anti-patterns.md` for detailed cases with before/after examples.
 
@@ -379,7 +341,7 @@ See `references/anti-patterns.md` for detailed cases with before/after examples.
 | Always-on, applies to every session | CLAUDE.md / custom instructions |
 | Scenario-specific workflow | Skill |
 | External API/database access | MCP Server + Skill (Tool Augmentation) |
-| Isolated, async execution | Skill with context: fork |
+| Isolated, async execution | Skill with platform-specific isolation (see [references/vendor-extensions.md](references/vendor-extensions.md)) |
 | Multiple skills to coordinate | Workflow Chain / Skill Family |
 | One-off assistant behavior tweak | Prompt (not a skill) |
 
@@ -442,7 +404,7 @@ This skill itself must pass its own standards:
 - [ ] body ≤ 500 lines, details in references/?
 - [ ] references/ has clear loading conditions per file?
 - [ ] assets/ templates use {{PLACEHOLDER}} markers?
-- [ ] Passes `skills-ref validate`?
+- [ ] Passes `skills-ref validate` (if available)?
 - [ ] Self-assessed maturity: L3+?
 
 
@@ -483,3 +445,4 @@ Load these on demand when the user's needs match:
 | [scripts/validate-trigger.py](scripts/validate-trigger.py) | Automating L1 trigger validation. Run: `python scripts/validate-trigger.py <skill-dir>` |
 | [scripts/fusion-analyzer.py](scripts/fusion-analyzer.py) | Assessing fusion compatibility. Run: `python scripts/fusion-analyzer.py <dir1> <dir2> [...]` |
 | [scripts/check-updates.py](scripts/check-updates.py) | Checking source repo updates. Run: `python scripts/check-updates.py --skill-dir <path>` |
+| `scripts/run-eval.py` (planned) | Automated L3 batch evaluation runner. See [references/evaluation-guide.md](references/evaluation-guide.md). |

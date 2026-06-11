@@ -13,7 +13,7 @@ Output: JSON assessment report with scores, conflict flags, and verdict.
 
 import json
 import re
-import sys
+import argparse
 from pathlib import Path
 
 
@@ -30,7 +30,7 @@ def parse_skill(skill_dir: Path) -> dict:
         return {"error": "Missing YAML frontmatter", "dir": str(skill_dir)}
 
     frontmatter = parts[1]
-    meta = {"dir": str(skill_dir.name), "body": parts[2]}
+    meta = {"dir": str(skill_dir.name)}
 
     # Parse frontmatter line by line
     current_key = None
@@ -131,20 +131,18 @@ def score_complementarity(skill_a: dict, skill_b: dict) -> tuple:
     """Dimension 3: Complementarity (0-25)."""
     desc_a = skill_a.get("description", "")
     desc_b = skill_b.get("description", "")
-    body_a = skill_a.get("body", "")
-    body_b = skill_b.get("body", "")
 
     # Check if one skill's output appears in the other's input keywords
     a_verbs = {"generate", "create", "produce", "build", "write", "output", "deploy", "commit"}
     b_inputs = {"input", "consume", "receive", "read", "parse", "review", "analyze", "check", "test", "verify"}
 
-    a_output = set(w for w in re.findall(r'\b\w{4,}\b', (desc_a + " " + body_a).lower()) if w in a_verbs)
-    b_input = set(w for w in re.findall(r'\b\w{4,}\b', (desc_b + " " + body_b).lower()) if w in b_inputs)
+    a_output = set(w for w in re.findall(r'\b\w{4,}\b', desc_a.lower()) if w in a_verbs)
+    b_input = set(w for w in re.findall(r'\b\w{4,}\b', desc_b.lower()) if w in b_inputs)
 
     # Chain detection: one generates, the other consumes
     chain_score = 10 if (a_output and b_input) or (
-        set(w for w in re.findall(r'\b\w{4,}\b', (desc_b + " " + body_b).lower()) if w in a_verbs) and
-        set(w for w in re.findall(r'\b\w{4,}\b', (desc_a + " " + body_a).lower()) if w in b_inputs)
+        set(w for w in re.findall(r'\b\w{4,}\b', desc_b.lower()) if w in a_verbs) and
+        set(w for w in re.findall(r'\b\w{4,}\b', desc_a.lower()) if w in b_inputs)
     ) else 0
 
     # Domain adjacency: related but distinct sub-domains
@@ -258,18 +256,27 @@ def analyze(skill_dirs: list) -> dict:
 
 
 def main():
-    if len(sys.argv) < 3:
-        print("Usage: python scripts/fusion-analyzer.py <skill-dir-1> <skill-dir-2> [skill-dir-3 ...]")
-        print("       python scripts/fusion-analyzer.py --json <skill-dir-1> <skill-dir-2>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        description="Fusion Compatibility Analyzer for Agent Skills"
+    )
+    parser.add_argument(
+        "skill_dirs",
+        nargs="+",
+        help="Paths to skill directories to analyze (2 or more)"
+    )
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Output results as JSON"
+    )
+    args = parser.parse_args()
 
-    # Check for --json flag
-    json_output = "--json" in sys.argv
-    args = [a for a in sys.argv[1:] if a != "--json"]
+    if len(args.skill_dirs) < 2:
+        parser.error("At least 2 skill directories are required")
 
-    report = analyze(args)
+    report = analyze(args.skill_dirs)
 
-    if json_output:
+    if args.json:
         print(json.dumps(report, indent=2, ensure_ascii=False))
     else:
         print("=" * 60)
